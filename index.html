@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>上品な日本語表現辞典</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f8f8;
+            overflow-x: auto;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: #fff;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            background: #fff;
+            padding: 30px 30px 20px;
+            text-align: center;
+            border-bottom: 1px solid #e1e1e1;
+        }
+
+        .header h1 {
+            font-size: 1.6em;
+            font-weight: 300;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 0.85em;
+        }
+
+        .search-container {
+            padding: 15px 30px;
+            background: #fff;
+            border-bottom: 1px solid #e1e1e1;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #d1d1d1;
+            border-radius: 6px;
+            font-size: 0.9em;
+            background: #fff;
+            transition: border-color 0.2s ease;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #007AFF;
+        }
+
+        .drums-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr 1fr;
+            gap: 30px;
+            padding: 30px 40px;
+            min-height: calc(100vh - 160px);
+            position: relative;
+        }
+
+        .drum-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .category-label {
+            font-size: 0.75em;
+            color: #666;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .drum-roll {
+            position: relative;
+            width: 100%;
+            height: 140px;
+            overflow: hidden;
+            background: #fafafa;
+            border: 2px solid #e1e1e1;
+            border-radius: 12px;
+        }
+
+        .drum-roll::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            right: 10px;
+            height: 1px;
+            transform: translateY(-12px);
+            border-top: 1px solid #007AFF;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .drum-roll::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            right: 10px;
+            height: 1px;
+            transform: translateY(13px);
+            border-top: 1px solid #007AFF;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .drum-cylinder {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.3s ease;
+        }
+
+        .drum-item {
+            position: absolute;
+            width: calc(100% - 20px);
+            left: 10px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #e8e8e8;
+            border-radius: 4px;
+            font-size: 0.65em;
+            color: #666;
+            cursor: pointer;
+            padding: 0 8px;
+            text-align: center;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: all 0.3s ease;
+        }
+
+        .drum-item.active {
+            background: rgba(255, 255, 255, 0.98);
+            font-weight: 600;
+            z-index: 10;
+            border-top: 1px solid transparent;
+            border-bottom: 1px solid transparent;
+            opacity: 1;
+        }
+
+        .drum-item.dimmed {
+            opacity: 0.3;
+        }
+
+        /* カテゴリごとの文字色設定 */
+        .drum-business .drum-item.active {
+            color: #E91E63;
+            border-top-color: #E91E63;
+            border-bottom-color: #E91E63;
+            box-shadow: 0 2px 15px rgba(233, 30, 99, 0.2);
+        }
+
+        .drum-time .drum-item.active {
+            color: #4CAF50;
+            border-top-color: #4CAF50;
+            border-bottom-color: #4CAF50;
+            box-shadow: 0 2px 15px rgba(76, 175, 80, 0.2);
+        }
+
+        .drum-email .drum-item.active {
+            color: #4169E1;
+            border-top-color: #4169E1;
+            border-bottom-color: #4169E1;
+            box-shadow: 0 2px 15px rgba(65, 105, 225, 0.2);
+        }
+
+        .drum-season .drum-item.active {
+            color: #A0522D;
+            border-top-color: #A0522D;
+            border-bottom-color: #A0522D;
+            box-shadow: 0 2px 15px rgba(160, 82, 45, 0.2);
+        }
+
+        .drum-katakana .drum-item.active {
+            color: #FF9800;
+            border-top-color: #FF9800;
+            border-bottom-color: #FF9800;
+            box-shadow: 0 2px 15px rgba(255, 152, 0, 0.2);
+        }
+
+        .drum-numbers .drum-item.active {
+            color: #9C27B0;
+            border-top-color: #9C27B0;
+            border-bottom-color: #9C27B0;
+            box-shadow: 0 2px 15px rgba(156, 39, 176, 0.2);
+        }
+
+        .scroll-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .scroll-btn {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #d1d1d1;
+            background: #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .scroll-btn:hover {
+            background: #f0f0f0;
+            border-color: #007AFF;
+            color: #007AFF;
+        }
+
+        .detail-panel {
+            position: fixed;
+            right: 20px;
+            bottom: 30px;
+            background: #fff;
+            border: 1px solid #e1e1e1;
+            border-radius: 12px;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .current-selection {
+            margin-bottom: 15px;
+        }
+
+        .selection-category {
+            font-size: 0.7em;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .selection-text {
+            font-size: 0.9em;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .casual-text {
+            color: #666;
+            margin-bottom: 3px;
+        }
+
+        .arrow-text {
+            color: #999;
+            margin-bottom: 3px;
+            font-size: 0.9em;
+        }
+
+        .elegant-text {
+            font-weight: 600;
+        }
+
+        /* 詳細パネルのカテゴリ別色設定 */
+        .detail-panel.business .elegant-text {
+            color: #E91E63;
+        }
+
+        .detail-panel.time .elegant-text {
+            color: #4CAF50;
+        }
+
+        .detail-panel.email .elegant-text {
+            color: #4169E1;
+        }
+
+        .detail-panel.season .elegant-text {
+            color: #A0522D;
+        }
+
+        .detail-panel.katakana .elegant-text {
+            color: #FF9800;
+        }
+
+        .detail-panel.numbers .elegant-text {
+            color: #9C27B0;
+        }
+
+        .detail-btn {
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.2s ease;
+            font-weight: 500;
+            width: 100%;
+            color: #fff;
+        }
+
+        /* 詳細ボタンのカテゴリ別色設定 */
+        .detail-panel.business .detail-btn {
+            background: #E91E63;
+        }
+
+        .detail-panel.business .detail-btn:hover {
+            background: #C2185B;
+        }
+
+        .detail-panel.time .detail-btn {
+            background: #4CAF50;
+        }
+
+        .detail-panel.time .detail-btn:hover {
+            background: #388E3C;
+        }
+
+        .detail-panel.email .detail-btn {
+            background: #4169E1;
+        }
+
+        .detail-panel.email .detail-btn:hover {
+            background: #1E40AF;
+        }
+
+        .detail-panel.season .detail-btn {
+            background: #A0522D;
+        }
+
+        .detail-panel.season .detail-btn:hover {
+            background: #8B4513;
+        }
+
+        .detail-panel.katakana .detail-btn {
+            background: #FF9800;
+        }
+
+        .detail-panel.katakana .detail-btn:hover {
+            background: #F57C00;
+        }
+
+        .detail-panel.numbers .detail-btn {
+            background: #9C27B0;
+        }
+
+        .detail-panel.numbers .detail-btn:hover {
+            background: #7B1FA2;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .close {
+            color: #999;
+            float: right;
+            font-size: 24px;
+            font-weight: normal;
+            cursor: pointer;
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background-color 0.2s ease;
+        }
+
+        .close:hover {
+            background: #f0f0f0;
+        }
+
+        .modal h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            font-weight: 500;
+            padding-right: 40px;
+        }
+
+        .modal p {
+            margin-bottom: 15px;
+            line-height: 1.7;
+            color: #666;
+        }
+
+        .usage-example {
+            background: #f8f8f8;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 3px solid #007AFF;
+        }
+
+        .usage-example strong {
+            color: #333;
+            font-size: 0.9em;
+        }
+
+        .usage-example p {
+            margin-top: 8px;
+            color: #555;
+            font-style: italic;
+        }
+
+        @media (max-width: 1200px) {
+            .drums-container {
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+                padding: 20px;
+            }
+
+            .detail-panel {
+                position: static;
+                margin: 20px auto;
+                width: 90%;
+                max-width: 350px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 0;
+                box-shadow: none;
+            }
+            
+            .header {
+                padding: 20px 15px 15px;
+            }
+            
+            .search-container {
+                padding: 10px 15px;
+            }
+            
+            .drums-container {
+                grid-template-columns: 1fr;
+                grid-template-rows: repeat(6, 1fr);
+                padding: 15px;
+                gap: 20px;
+            }
+            
+            .drum-roll {
+                height: 120px;
+            }
+
+            .drum-item {
+                height: 22px;
+                font-size: 0.5em;
+            }
+
+            .detail-panel {
+                width: 95%;
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>上品な日本語表現辞典</h1>
+            <p>複数のドラムロールで美しい日本語を選択</p>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="表現を検索..." id="searchInput">
+        </div>
+
+        <div class="drums-container" id="drumsContainer">
+            <!-- ドラムロールがここに動的に生成される -->
+        </div>
+
+        <div class="detail-panel">
+            <div class="current-selection">
+                <div class="selection-category" id="selectionCategory">ビジネス敬語</div>
+                <div class="selection-text">
+                    <div class="casual-text" id="casualText">「はい」</div>
+                    <div class="arrow-text">↓</div>
+                    <div class="elegant-text" id="elegantText">「左様でございます」</div>
+                </div>
+            </div>
+            <button class="detail-btn" id="detailBtn">詳細を見る</button>
+        </div>
+    </div>
+
+    <!-- モーダル -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <span class="close">×</span>
+            <h3 id="modalTitle"></h3>
+            <p id="modalDescription"></p>
+            <div class="usage-example">
+                <strong>使用例</strong>
+                <p id="modalExample"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // データ定義
+        const expressionData = {
+            business: {
+                name: 'ビジネス敬語',
+                items: [
+                    { casual: 'はい', elegant: '左様でございます', description: '「はい」のより丁寧で上品な表現。', example: '会議で「左様でございますね」' },
+                    { casual: 'そうですね', elegant: 'いかにも', description: '同意を表す古風で品のある表現。', example: '「いかにも、おっしゃる通りです」' },
+                    { casual: '分かりました', elegant: '心得ました', description: '理解と実行の意志を示す表現。', example: '「心得ました、早速取り掛かります」' },
+                    { casual: 'そうします', elegant: '然るべく対処いたします', description: '適切な方法で対応することを表す表現。', example: '「然るべく対処いたします」' },
+                    { casual: '申し訳ありません', elegant: '恐縮至極でございます', description: '深い謝罪の気持ちを表す表現。', example: '「恐縮至極でございます」' },
+                    { casual: 'ちょっと待って', elegant: '少々お待ちください', description: '短時間の待機を丁寧に依頼する表現。', example: '「少々お待ちください」' },
+                    { casual: '知りません', elegant: '存じ上げません', description: '知らないことを謙遜を込めて表現。', example: '「存じ上げません」' },
+                    { casual: 'できません', elegant: '致しかねます', description: '丁寧に断る際の上品な表現。', example: '「致しかねます」' },
+                    { casual: 'やってみます', elegant: '取り組ませていただきます', description: '積極的な姿勢を示す表現。', example: '「取り組ませていただきます」' },
+                    { casual: 'いいですね', elegant: '素晴らしいお考えです', description: '相手のアイデアを評価する表現。', example: '「素晴らしいお考えですね」' },
+                    { casual: 'どうですか', elegant: 'いかがでしょうか', description: '相手の意見を尋ねる丁寧な表現。', example: '「いかがでしょうか」' },
+                    { casual: 'がんばります', elegant: '全力で取り組みます', description: '決意を示す格式ある表現。', example: '「全力で取り組みます」' },
+                    { casual: 'おっしゃる通り', elegant: 'ご指摘の通りです', description: '相手の意見に同意する丁寧な表現。', example: '「ご指摘の通りです」' },
+                    { casual: 'そういうことですね', elegant: 'さようでございますね', description: '理解を示す上品な表現。', example: '「さようでございますね」' },
+                    { casual: 'お聞きします', elegant: 'お伺いいたします', description: '質問する際の謙譲語表現。', example: '「お伺いいたします」' },
+                    { casual: 'お答えします', elegant: 'ご回答申し上げます', description: '回答する際の丁寧な表現。', example: '「ご回答申し上げます」' },
+                    { casual: 'すみません', elegant: '恐れ入ります', description: '謝罪や依頼の際の上品な表現。', example: '「恐れ入ります」' },
+                    { casual: 'ダメです', elegant: '不適切かと存じます', description: '否定的な意見を丁寧に表現。', example: '「不適切かと存じます」' },
+                    { casual: 'いいと思います', elegant: '適切かと存じます', description: '肯定的な意見を上品に表現。', example: '「適切かと存じます」' },
+                    { casual: 'お疲れ様でした', elegant: 'ご苦労をおかけいたしました', description: '労いの気持ちを込めた表現。', example: '「ご苦労をおかけいたしました」' }
+                ]
+            },
+            time: {
+                name: '時間・数量',
+                items: [
+                    { casual: 'すぐに', elegant: '速やかに', description: '迅速に行動することを表す格式ある表現。', example: 'メールで「速やかに対応させていただきます」' },
+                    { casual: 'たくさん', elegant: '多々', description: '数量の多さを上品に表現する言葉。', example: '「多々ご不便をおかけして申し訳ございません」' },
+                    { casual: '少し', elegant: '心ばかり', description: '謙遜の気持ちを込めた少量を表す表現。', example: '「心ばかりの品ですが、お納めください」' },
+                    { casual: 'いつも', elegant: '常日頃', description: '日常的に継続していることを表す格式ある表現。', example: '「常日頃よりお世話になっております」' },
+                    { casual: '前もって', elegant: '予め', description: '事前に準備することを表す簡潔で品のある表現。', example: '「予めご了承ください」' },
+                    { casual: '最近', elegant: '昨今', description: '近頃を表す格調高い表現。', example: '「昨今の状況を鑑みまして」' },
+                    { casual: '今度', elegant: '今般', description: '今回や次回を表す格式ある表現。', example: '「今般の件につきまして」' },
+                    { casual: 'この間', elegant: '先般', description: 'この前を表す丁寧な表現。', example: '「先般はお忙しい中」' },
+                    { casual: '後で', elegant: '後日', description: '後の時を表す格式ある表現。', example: '「後日改めてご連絡いたします」' },
+                    { casual: '今まで', elegant: 'これまで', description: '過去から現在までを表す表現。', example: '「これまでのご協力に感謝」' }
+                ]
+            },
+            email: {
+                name: 'メール定型文',
+                items: [
+                    { casual: 'お疲れ様です', elegant: 'いつもお世話になっております', description: 'より丁寧で感謝の気持ちを込めた挨拶。', example: 'メールの冒頭で使用' },
+                    { casual: 'よろしくお願いします', elegant: '何卒よろしくお願い申し上げます', description: '強い敬意と懇願の気持ちを表す。', example: '重要な依頼の締めくくりに' },
+                    { casual: 'ありがとうございます', elegant: '深謝いたします', description: '深い感謝の気持ちを表す。', example: '特別な配慮への感謝' },
+                    { casual: 'お忙しい', elegant: 'ご多用', description: '相手の忙しさを丁寧に表現。', example: '「ご多用の中、お時間を」' },
+                    { casual: '連絡します', elegant: 'ご連絡申し上げます', description: '連絡することを丁寧に表現。', example: '「後日ご連絡申し上げます」' },
+                    { casual: '確認してください', elegant: 'ご査収ください', description: '内容を確認してもらう際の表現。', example: '「資料をご査収ください」' },
+                    { casual: '返事をください', elegant: 'ご返答のほどお願いいたします', description: '返信を求める丁寧な表現。', example: '「ご都合のほど、ご返答を」' },
+                    { casual: '会いましょう', elegant: 'お目にかからせていただきます', description: '面会を申し出る謙譲語。', example: '「来週お目にかかります」' },
+                    { casual: '送ります', elegant: 'お送りいたします', description: '何かを送る際の丁寧な表現。', example: '「資料をお送りいたします」' },
+                    { casual: '教えてください', elegant: 'ご教示ください', description: '指導を求める格式ある表現。', example: '「正しい手順をご教示ください」' }
+                ]
+            },
+            season: {
+                name: '季節の挨拶',
+                items: [
+                    { casual: '暑いですね', elegant: '盛夏の候', description: '真夏の時期を表す時候の挨拶。', example: '7月下旬〜8月上旬に使用' },
+                    { casual: '涼しくなりました', elegant: '初秋の候', description: '秋の始まりを表す時候の挨拶。', example: '8月下旬〜9月上旬に使用' },
+                    { casual: '寒いですね', elegant: '厳冬の候', description: '厳しい寒さの時期を表す。', example: '1月〜2月の寒い時期に' },
+                    { casual: '暖かくなりました', elegant: '新緑の候', description: '春から初夏の美しい季節を表現。', example: '4月下旬〜5月に使用' },
+                    { casual: '桜が咲きました', elegant: '桜花の候', description: '桜の季節を表現する雅な挨拶。', example: '4月上旬の桜の時期に' },
+                    { casual: '雨が多いですね', elegant: '梅雨の候', description: '梅雨時期を表現する挨拶。', example: '6月中旬〜7月上旬に' },
+                    { casual: '紅葉がきれいです', elegant: '紅葉の候', description: '秋の紅葉を表現する挨拶。', example: '10月下旬〜11月上旬に' },
+                    { casual: '雪が降っています', elegant: '降雪の候', description: '雪の季節を表現する挨拶。', example: '12月〜2月の雪の時期に' },
+                    { casual: '風が涼しいです', elegant: '涼風の候', description: '涼しい風を表現する挨拶。', example: '9月上旬の涼しい時期に' },
+                    { casual: '蒸し暑いです', elegant: '酷暑の候', description: '厳しい暑さを表現する挨拶。', example: '7月〜8月の最も暑い時期に' }
+                ]
+            },
+            katakana: {
+                name: 'カタカナ語→日本語',
+                items: [
+                    { casual: 'リスケしましょう', elegant: '日程を調整いたします', description: 'スケジュール変更を丁寧に表現。', example: '会議の時間変更を提案する際に' },
+                    { casual: 'アジェンダ', elegant: '議題', description: '会議で話し合う内容を表す。', example: '「本日の議題は以下の通りです」' },
+                    { casual: 'コミットします', elegant: 'お約束いたします', description: '責任を持って実行することを表す。', example: '「必ずお約束いたします」' },
+                    { casual: 'フィードバック', elegant: 'ご意見・ご感想', description: '相手の考えや評価を求める。', example: '「ご意見をお聞かせください」' },
+                    { casual: 'ブラッシュアップ', elegant: '改善・向上', description: '質を高めることを表現。', example: '「さらなる改善を図ります」' },
+                    { casual: 'シェア', elegant: '共有', description: '情報を分け合うこと。', example: '「情報を共有いたします」' },
+                    { casual: 'アップデート', elegant: '更新・最新情報', description: '情報を新しくすること。', example: '「最新情報をお伝えします」' },
+                    { casual: 'チェック', elegant: '確認・点検', description: '調べることを表現。', example: '「内容を確認いたします」' },
+                    { casual: 'サポート', elegant: '支援・援助', description: '助けることを表現。', example: '「全面的に支援いたします」' },
+                    { casual: 'クリア', elegant: '解決・完了', description: '問題を片付けること。', example: '「問題を解決いたします」' }
+                ]
+            },
+            numbers: {
+                name: '数字・単位',
+                items: [
+                    { casual: '1つ', elegant: '一点', description: '単数を表す上品な表現。', example: '「一点ご確認ください」' },
+                    { casual: '2回', elegant: '二度', description: '回数を表す格調ある表現。', example: '「二度とこのようなことが」' },
+                    { casual: '半分', elegant: '半ば', description: '中間点を表す美しい表現。', example: '「プロジェクトも半ば」' },
+                    { casual: '全部', elegant: '一切', description: '全てを表す力強い表現。', example: '「一切の妥協はいたしません」' },
+                    { casual: '3つ', elegant: '三点', description: '複数の物を上品に表現。', example: '「三点ほどご質問があります」' },
+                    { casual: '最初', elegant: '第一', description: '順序の最初を格式高く表現。', example: '「第一の課題として」' },
+                    { casual: '1番目', elegant: '筆頭', description: '最も重要な位置を表す。', example: '「筆頭案件として検討」' },
+                    { casual: '何回も', elegant: '度重なり', description: '繰り返しを表す表現。', example: '「度重なりご迷惑を」' },
+                    { casual: '少ない', elegant: '僅少', description: '量の少なさを格式高く表現。', example: '「僅少ながらお納めください」' },
+                    { casual: '多い', elegant: '多数', description: '量の多さを丁寧に表現。', example: '「多数のご参加をいただき」' }
+                ]
+            }
+        };
+
+        let drumStates = {};
+        let activeCategory = 'business';
+        let activeIndex = 0;
+
+        // 全ドラムロール初期化
+        function initAllDrums() {
+            const container = document.getElementById('drumsContainer');
+            container.innerHTML = '';
+
+            Object.keys(expressionData).forEach((categoryKey, categoryIndex) => {
+                const categoryData = expressionData[categoryKey];
+                drumStates[categoryKey] = 0; // 初期選択インデックス
+
+                // ドラムセクション作成
+                const drumSection = document.createElement('div');
+                drumSection.className = `drum-section drum-${categoryKey}`;
+
+                // カテゴリラベル
+                const label = document.createElement('div');
+                label.className = 'category-label';
+                label.textContent = categoryData.name;
+                drumSection.appendChild(label);
+
+                // ドラムロール
+                const drumRoll = document.createElement('div');
+                drumRoll.className = 'drum-roll';
+                drumRoll.id = `drum-${categoryKey}`;
+
+                const cylinder = document.createElement('div');
+                cylinder.className = 'drum-cylinder';
+                cylinder.id = `cylinder-${categoryKey}`;
+
+                // ドラムアイテム作成 - 2D配置
+                const itemHeight = 35; // アイテムの間隔
+                
+                categoryData.items.forEach((item, index) => {
+                    const drumItem = document.createElement('div');
+                    drumItem.className = 'drum-item';
+                    drumItem.innerHTML = `${item.casual}<br>→ ${item.elegant}`;
+                    
+                    // 2D配置：フォーカスエリア（58px〜83px）内にアイテムが収まるよう配置
+                    drumItem.style.top = `${index * itemHeight + 58}px`; // フォーカス上線位置から開始
+                    drumItem.addEventListener('click', () => selectItem(categoryKey, index));
+                    cylinder.appendChild(drumItem);
+                });
+
+                drumRoll.appendChild(cylinder);
+
+                // スクロールコントロール
+                const controls = document.createElement('div');
+                controls.className = 'scroll-controls';
+                
+                const upBtn = document.createElement('button');
+                upBtn.className = 'scroll-btn';
+                upBtn.textContent = '▲';
+                upBtn.addEventListener('click', () => scrollDrum(categoryKey, -1));
+                
+                const downBtn = document.createElement('button');
+                downBtn.className = 'scroll-btn';
+                downBtn.textContent = '▼';
+                downBtn.addEventListener('click', () => scrollDrum(categoryKey, 1));
+
+                controls.appendChild(upBtn);
+                controls.appendChild(downBtn);
+
+                drumSection.appendChild(drumRoll);
+                drumSection.appendChild(controls);
+                container.appendChild(drumSection);
+
+                // ホイールスクロール対応
+                drumRoll.addEventListener('wheel', (e) => {
+                    e.preventDefault();
+                    scrollDrum(categoryKey, e.deltaY > 0 ? 1 : -1);
+                });
+
+                // タッチスワイプ対応
+                let touchStartY = 0;
+                drumRoll.addEventListener('touchstart', (e) => {
+                    touchStartY = e.touches[0].clientY;
+                });
+
+                drumRoll.addEventListener('touchmove', (e) => {
+                    e.preventDefault();
+                });
+
+                drumRoll.addEventListener('touchend', (e) => {
+                    const touchEndY = e.changedTouches[0].clientY;
+                    const diff = touchStartY - touchEndY;
+                    
+                    if (Math.abs(diff) > 30) {
+                        scrollDrum(categoryKey, diff > 0 ? 1 : -1);
+                    }
+                });
+
+                // 初期状態を最初のカテゴリーにセット
+                if (categoryIndex === 0) {
+                    activeCategory = categoryKey;
+                    activeIndex = 0;
+                }
+            });
+
+            // 全ドラムを初期位置に設定
+            updateAllDrums();
+            updateDetailPanel();
+        }
+
+        // ドラムスクロール
+        function scrollDrum(categoryKey, direction) {
+            const items = expressionData[categoryKey].items;
+            drumStates[categoryKey] = (drumStates[categoryKey] + direction + items.length) % items.length;
+            
+            // スクロールされたドラムをアクティブに設定
+            activeCategory = categoryKey;
+            activeIndex = drumStates[categoryKey];
+            
+            updateDrumPosition(categoryKey);
+            updateDetailPanel();
+        }
+
+        // アイテム選択
+        function selectItem(categoryKey, index) {
+            drumStates[categoryKey] = index;
+            activeCategory = categoryKey;
+            activeIndex = index;
+            updateDrumPosition(categoryKey);
+            updateDetailPanel();
+        }
+
+        // 特定のドラム位置更新
+        function updateDrumPosition(categoryKey) {
+            const cylinder = document.getElementById(`cylinder-${categoryKey}`);
+            const items = expressionData[categoryKey].items;
+            const currentIndex = drumStates[categoryKey];
+            
+            // 2D移動：選択されたアイテムの中央がフォーカスライン（70px）に来るように移動
+            const itemHeight = 35;
+            // シンプルな計算：選択されたアイテムを上に移動してフォーカス位置に配置
+            const offset = -currentIndex * itemHeight;
+            
+            cylinder.style.transform = `translateY(${offset}px)`;
+
+            // アイテムの視覚効果更新（透明度とスケール）
+            const drumItems = cylinder.querySelectorAll('.drum-item');
+            drumItems.forEach((item, index) => {
+                item.classList.remove('active', 'dimmed');
+                
+                const distance = Math.abs(index - currentIndex);
+                
+                if (index === currentIndex) {
+                    // 選択されたアイテム
+                    item.classList.add('active');
+                    item.style.opacity = '1';
+                    item.style.transform = 'scale(1)';
+                    item.style.zIndex = '10';
+                } else if (distance === 1) {
+                    // 隣接するアイテム
+                    item.style.opacity = '0.7';
+                    item.style.transform = 'scale(0.95)';
+                    item.style.zIndex = '5';
+                } else if (distance === 2) {
+                    // 2つ離れたアイテム
+                    item.style.opacity = '0.4';
+                    item.style.transform = 'scale(0.9)';
+                    item.style.zIndex = '2';
+                } else {
+                    // それ以上離れたアイテム
+                    item.classList.add('dimmed');
+                    item.style.opacity = '0.2';
+                    item.style.transform = 'scale(0.85)';
+                    item.style.zIndex = '1';
+                }
+            });
+        }
+
+        // 全ドラム位置更新
+        function updateAllDrums() {
+            Object.keys(expressionData).forEach(categoryKey => {
+                updateDrumPosition(categoryKey);
+            });
+        }
+
+        // 詳細パネル更新
+        function updateDetailPanel() {
+            const categoryData = expressionData[activeCategory];
+            const currentItem = categoryData.items[activeIndex];
+            const detailPanel = document.querySelector('.detail-panel');
+            
+            // 詳細パネルのクラスを更新（色変更のため）
+            detailPanel.className = `detail-panel ${activeCategory}`;
+            
+            document.getElementById('selectionCategory').textContent = categoryData.name;
+            document.getElementById('casualText').textContent = `「${currentItem.casual}」`;
+            document.getElementById('elegantText').textContent = `「${currentItem.elegant}」`;
+        }
+
+        // モーダル機能
+        const modal = document.getElementById('detailModal');
+        const closeBtn = document.querySelector('.close');
+
+        document.getElementById('detailBtn').addEventListener('click', () => {
+            const categoryData = expressionData[activeCategory];
+            const currentItem = categoryData.items[activeIndex];
+            
+            document.getElementById('modalTitle').textContent = currentItem.elegant;
+            document.getElementById('modalDescription').textContent = currentItem.description;
+            document.getElementById('modalExample').textContent = currentItem.example;
+            modal.style.display = 'block';
+        });
+
+        closeBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // キーボード操作
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                modal.style.display = 'none';
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                scrollDrum(activeCategory, -1);
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                scrollDrum(activeCategory, 1);
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                const categories = Object.keys(expressionData);
+                const currentCategoryIndex = categories.indexOf(activeCategory);
+                const newCategoryIndex = (currentCategoryIndex - 1 + categories.length) % categories.length;
+                activeCategory = categories[newCategoryIndex];
+                activeIndex = drumStates[activeCategory];
+                updateDetailPanel();
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                const categories = Object.keys(expressionData);
+                const currentCategoryIndex = categories.indexOf(activeCategory);
+                const newCategoryIndex = (currentCategoryIndex + 1) % categories.length;
+                activeCategory = categories[newCategoryIndex];
+                activeIndex = drumStates[activeCategory];
+                updateDetailPanel();
+            }
+        });
+
+        // 検索機能
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            if (searchTerm === '') return;
+
+            // 全カテゴリから検索
+            Object.keys(expressionData).forEach(categoryKey => {
+                const items = expressionData[categoryKey].items;
+                const foundIndex = items.findIndex(item => 
+                    item.casual.toLowerCase().includes(searchTerm) || 
+                    item.elegant.toLowerCase().includes(searchTerm)
+                );
+
+                if (foundIndex !== -1) {
+                    drumStates[categoryKey] = foundIndex;
+                    activeCategory = categoryKey;
+                    activeIndex = foundIndex;
+                    updateDrumPosition(categoryKey);
+                    updateDetailPanel();
+                    return;
+                }
+            });
+        });
+
+        // 初期化
+        initAllDrums();
+        
+        // 外部CSVファイルからデータ自動読み込み
+        loadDataFromCSV();
+
+        async function loadDataFromCSV() {
+            try {
+                const response = await fetch('./data.csv');
+                if (response.ok) {
+                    const csvText = await response.text();
+                    const newData = parseCSVToExpressionData(csvText);
+                    
+                    // データを更新
+                    Object.assign(expressionData, newData);
+                    
+                    // ドラムロールを再初期化
+                    initAllDrums();
+                    
+                    console.log('✅ CSVデータから読み込み完了');
+                } else {
+                    console.log('📄 CSVファイルが見つかりません。デフォルトデータを使用します。');
+                }
+            } catch (error) {
+                console.log('📄 CSVファイルの読み込みに失敗。デフォルトデータを使用します:', error);
+            }
+        }
+
+        function parseCSVToExpressionData(csvText) {
+            const lines = csvText.split('\n').filter(line => line.trim());
+            const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
+            const newData = {};
+
+            // データ行を処理
+            for (let i = 1; i < lines.length; i++) {
+                const values = parseCSVLine(lines[i]);
+                if (values.length < headers.length) continue;
+
+                const rowData = {};
+                headers.forEach((header, index) => {
+                    rowData[header] = (values[index] || '').replace(/"/g, '');
+                });
+
+                const category = rowData.category;
+                const categoryName = rowData.category_name;
+
+                if (!category || !categoryName) continue;
+
+                if (!newData[category]) {
+                    newData[category] = {
+                        name: categoryName,
+                        items: []
+                    };
+                }
+
+                if (rowData.casual && rowData.elegant) {
+                    newData[category].items.push({
+                        casual: rowData.casual,
+                        elegant: rowData.elegant,
+                        description: rowData.description || '',
+                        example: rowData.example || ''
+                    });
+                }
+            }
+
+            return newData;
+        }
+
+        function parseCSVLine(line) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                const nextChar = line[i + 1];
+                
+                if (char === '"') {
+                    if (inQuotes && nextChar === '"') {
+                        current += '"';
+                        i++;
+                    } else {
+                        inQuotes = !inQuotes;
+                    }
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current);
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            
+            result.push(current);
+            return result;
+        }
+    </script>
+</body>
+</html>
